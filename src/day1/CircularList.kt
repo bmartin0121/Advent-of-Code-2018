@@ -1,6 +1,6 @@
 package day1
 
-public class CircularList<T> : List<T> {
+class CircularList<T> : List<T> {
 	val seed: List<T>
 
 	override val size: Int
