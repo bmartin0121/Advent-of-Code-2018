@@ -7,16 +7,27 @@ class Claim(val id: String, val leftUpCorner: Pair<Int, Int>, val width: Int, va
 	val rightUpCorner = leftUpCorner.first + width - 1 `to` leftUpCorner.second
 	val rightDownCorner = leftUpCorner.first + width - 1 `to` leftUpCorner.second + height - 1
 	val leftDownCorner = leftUpCorner.first `to` leftUpCorner.second + height - 1
-	
+
 	fun containsPoint(point: Pair<Int, Int>): Boolean {
 		return leftUpCorner.first <= point.first &&
+				rightUpCorner.first >= point.first &&
 				leftUpCorner.second <= point.second &&
-				leftUpCorner.first + height >= point.first &&
-				leftUpCorner.second + width >= point.second
+				leftDownCorner.second >= point.second
 	}
-	
+
+	fun overlapsWith(other: Claim): Boolean {
+		for (i in leftUpCorner.first..rightUpCorner.first) {
+			for (j in leftUpCorner.second..rightDownCorner.second) {
+				if (other.containsPoint(i `to` j)) {
+					return true
+				}
+			}
+		}
+		return false
+	}
+
 	override fun toString(): String = "Claim[id=${id}, leftCorner=${leftUpCorner}, width=${width}, height=${height}]"
-	
+
 }
 
 fun claimFromFormattedString(input: String): Claim {

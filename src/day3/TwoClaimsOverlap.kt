@@ -2,6 +2,10 @@ package day3
 
 import common.readLines
 
+/*
+ * First part
+*/
+
 fun main(args: Array<String>) {
 	val fabric = HashMap<Pair<Int, Int>, Int>();
 	readLines("day3.txt")
