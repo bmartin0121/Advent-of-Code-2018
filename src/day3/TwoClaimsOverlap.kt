@@ -18,8 +18,8 @@ fun main(args: Array<String>) {
 fun putCoverage(claim: Claim, fabric: HashMap<Pair<Int, Int>, Int>) {
 	for (i in claim.leftUpCorner.first..claim.rightUpCorner.first) {
 		for (j in claim.leftUpCorner.second..claim.rightDownCorner.second) {
-			val coverage = fabric.getOrDefault(i `to` j, 0) + 1
-			fabric.put(i `to` j, coverage)
+			val coverage = fabric.getOrDefault(i to j, 0) + 1
+			fabric.put(i to j, coverage)
 		}
 	}
 }

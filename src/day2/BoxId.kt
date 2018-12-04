@@ -9,7 +9,7 @@ class BoxId {
 		this.id = id
 		this.charCount = id.asIterable()
 			.distinct()
-			.map { char -> char `to` id.asIterable().count { char == it } }
+			.map { char -> char to id.asIterable().count { char == it } }
 			.toMap()
 	}
 	

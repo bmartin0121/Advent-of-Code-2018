@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
 	var boxIds = readLines("day2.txt").map { BoxId(it) }
 	val idAndDifferentIndex = boxIds.mapIndexed { index, box ->
 		boxIds.drop(index + 1)
-			.map { box `to` it.differentIndeces(box) }
+			.map { box to it.differentIndeces(box) }
 			.find { it.second.size == 1 }
 	}.find { it != null }
 	if (idAndDifferentIndex != null) {
