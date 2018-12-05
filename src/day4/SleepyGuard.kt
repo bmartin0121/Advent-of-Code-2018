@@ -5,10 +5,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-/*
- * First part.
-*/
-
 val DATE_TIME_PATTERN = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm")
 val GUARD_BEGINS_SHIFT_REGEX = """Guard #(\d+) begins shift""".toRegex()
 val LOG_REGEX = """\[(.*)\](.*)""".toRegex()
@@ -31,8 +27,17 @@ fun main(args: Array<String>) {
             }
             lastTime = currentTime
         }
+    /*
+     * First part.
+     */
     val sleepyGuard = guards.values.maxBy { it!!.getAsleepTime() }
     println(sleepyGuard!!.id * sleepyGuard!!.mostAsleepMinute())
+
+    /*
+     * Second part
+     */
+    val frequentSleeper = guards.values.maxBy { it!!.minutesAsleepCount.maxBy { it.value }!!.value }
+    println(frequentSleeper!!.id * frequentSleeper!!.minutesAsleepCount.maxBy { it.value }!!.key)
 }
 
 private fun asleep() {
