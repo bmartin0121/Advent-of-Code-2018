@@ -27,3 +27,8 @@ hs_err_pid*
 .project
 .settings
 bin
+
+# IntelliJ files
+.idea
+out
+Advent-of-Code-2018.iml
