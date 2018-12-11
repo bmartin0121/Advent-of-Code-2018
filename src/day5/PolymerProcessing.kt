@@ -1,9 +1,10 @@
 package day5
 
 import common.readLines
+import common.readSingle
 
 fun main(args: Array<String>) {
-    val input = readLines("day5.txt")[0]
+    val input = readSingle("day5.txt")
 
     /*
      * First part.
