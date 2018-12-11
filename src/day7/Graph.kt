@@ -4,9 +4,13 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class Graph(val nodes: HashSet<Node>) {
 
+    fun getNodeWithId(id: Char): Node? = nodes.find { it.id == id }
+
+    fun getRootNodes(): List<Node> = nodes.filter { !it.connectedToAny(nodes) }.sortedBy { it.id }
+
     fun combinedBreathFirstSearch(): List<Node> {
         nodes.forEach { it.color = Node.Color.WHITE }
-        var queue = nodes.filter { !it.connectedToAny(nodes) }.sortedBy { it.id }
+        var queue = getRootNodes()
         val start = queue.first()
         start.color = Node.Color.GREY
         var result = listOf<Node>()
@@ -51,6 +55,8 @@ class Graph(val nodes: HashSet<Node>) {
         ordered.add(node)
     }
 
+    override fun toString(): String = "Graph [nodes=$nodes]"
+
     class Node(val id: Char) {
 
         var adjacents = HashSet<Node>()
@@ -70,7 +76,7 @@ class Graph(val nodes: HashSet<Node>) {
 
         override fun hashCode(): Int = id.hashCode()
 
-        override fun toString(): String = id.toString()
+        override fun toString(): String = "Node [$id, $color]"
 
         enum class Color {
             WHITE, GREY, BLACK
