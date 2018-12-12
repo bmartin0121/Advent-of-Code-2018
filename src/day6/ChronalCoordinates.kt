@@ -27,14 +27,14 @@ fun main(args: Array<String>) {
 }
 
 private fun floodFill(start: Pair<Int, Int>, coordinates: Collection<Pair<Int, Int>>): Set<Pair<Int, Int>> {
-    var queue = listOf(start)
-    var area = setOf<Pair<Int, Int>>()
+    var queue = mutableListOf(start)
+    var area = mutableSetOf<Pair<Int, Int>>()
     while (!queue.isEmpty()) {
         val current = queue.last()
-        queue = queue.dropLast(1)
+        queue.removeAt(queue.size - 1)
         if (!area.contains(current) && current.totalDistanceFromCoordinates(coordinates) < MAXIMUM_TOTAL_DISTANCE) {
-            area = area.plus(current)
-            queue = queue.plus(
+            area.add(current)
+            queue.addAll(
                 listOf(
                     (current.first + 1) to current.second,
                     current.first to (current.second + 1),

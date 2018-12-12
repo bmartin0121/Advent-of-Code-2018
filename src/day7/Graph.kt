@@ -2,7 +2,7 @@ package day7
 
 import java.util.concurrent.atomic.AtomicInteger
 
-class Graph(val nodes: HashSet<Node>) {
+class Graph(val nodes: Set<Node>) {
 
     fun getNodeWithId(id: Char): Node? = nodes.find { it.id == id }
 
@@ -10,19 +10,19 @@ class Graph(val nodes: HashSet<Node>) {
 
     fun combinedBreathFirstSearch(): List<Node> {
         nodes.forEach { it.color = Node.Color.WHITE }
-        var queue = getRootNodes()
+        var queue = getRootNodes().toMutableList()
         val start = queue.first()
         start.color = Node.Color.GREY
-        var result = listOf<Node>()
+        var result = mutableListOf<Node>()
         while (!queue.isEmpty()) {
             val node = queue.sortedBy { it.id }.first()
-            queue = queue.minus(node)
+            queue.remove(node)
             node.color = Node.Color.BLACK
-            result = result.plus(node)
+            result.add(node)
             for (adjNode in node.adjacents) {
                 if (adjNode.color == Node.Color.WHITE && adjNode.onlyBlackAdjacents(nodes)) {
                     adjNode.color = Node.Color.GREY
-                    queue = queue.plus(adjNode)
+                    queue.add(adjNode)
                 }
             }
         }
@@ -33,7 +33,7 @@ class Graph(val nodes: HashSet<Node>) {
     // so I kept this here :)
     fun topologicalOrder(): List<Node> {
         nodes.forEach { it.color = Node.Color.WHITE }
-        val ordered = ArrayList<Node>()
+        val ordered = mutableListOf<Node>()
         val startNodes = nodes.filter { !it.connectedToAny(nodes) }
             .sortedByDescending { it.id }
         for (node in startNodes) {
@@ -44,7 +44,7 @@ class Graph(val nodes: HashSet<Node>) {
         return ordered.reversed()
     }
 
-    private fun visit(node: Node, ordered: ArrayList<Node>) {
+    private fun visit(node: Node, ordered: MutableList<Node>) {
         node.color = Node.Color.GREY
         for (adjNode in node.adjacents.sortedByDescending { it.id }) {
             if (adjNode.color == Node.Color.WHITE) {

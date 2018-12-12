@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
     /**
      * First part
      */
-    val nodes = HashSet<Node>()
+    val nodes = mutableSetOf<Node>()
     readLines("day7.txt")
         .map { ADJACENCY_REGEX.find(it)!!.destructured }
         .map { it.component1()[0] to it.component2()[0] }
@@ -23,15 +23,15 @@ fun main(args: Array<String>) {
      * Second part
      */
     val workers = (1..NUMBER_OF_WORKERS).map { Worker(it) }
-    var assignable = graph.getRootNodes()
+    var assignable = graph.getRootNodes().toMutableList()
     var time = 0
     graph.nodes.forEach { it.color = Node.Color.WHITE }
     while (!assignable.isEmpty() || workers.any { it.isBusy() }) {
-        var availableWorkers = workers.filter { !it.isBusy() }
+        var availableWorkers = workers.filter { !it.isBusy() }.toMutableList()
         while (!availableWorkers.isEmpty() && !assignable.isEmpty()) {
             availableWorkers[0].assignWork(assignable[0])
-            availableWorkers = availableWorkers.drop(1)
-            assignable = assignable.drop(1)
+            availableWorkers.removeAt(0)
+            assignable.removeAt(0)
         }
 
         workers.forEach { it.tick() }
@@ -40,14 +40,14 @@ fun main(args: Array<String>) {
             .map { graph.getNodeWithId(it)!! }
             .filter { it.color == Graph.Node.Color.WHITE }
             .filter { it.onlyBlackAdjacents(graph.nodes) }
-            .forEach { assignable = assignable.plus(it) }
+            .forEach { assignable.add(it) }
 
         ++time
     }
     println(time)
 }
 
-private fun addArc(pair: Pair<Char, Char>, nodes: HashSet<Node>) {
+private fun addArc(pair: Pair<Char, Char>, nodes: MutableSet<Node>) {
     val from = nodes.find { it.id == pair.first } ?: Node(pair.first)
     val to = nodes.find { it.id == pair.second } ?: Node(pair.second)
     from.connect(to)

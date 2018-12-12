@@ -1,7 +1,7 @@
 package day1
 
+import common.CircularList
 import common.readLines
-import java.util.stream.Collectors
 
 /*
  * Second part
@@ -9,7 +9,8 @@ import java.util.stream.Collectors
 
 fun main(args: Array<String>) {
 	val shifts = CircularList<Int>(readLines("day1.txt")
-		.map { it.toInt() })
+        .map { it.toInt() }
+		.toMutableList())
 	println(findFirstDuplicate(shifts))
 }
 
