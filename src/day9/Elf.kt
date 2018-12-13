@@ -1,12 +1,14 @@
 package day9
 
+import java.math.BigInteger
+
 class Elf {
 
-    var score: Int = 0
+    var score = 0L
         private set
 
-    fun addScore(add: Int) {
-        score += add
+    fun addScore(toAdd: Long) {
+        score += toAdd
     }
 
     override fun toString(): String = "Elf[score=$score]"
