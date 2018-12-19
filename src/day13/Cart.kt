@@ -17,9 +17,9 @@ class Cart(var position: Pair<Int, Int>, var facing: Direction) {
         nextStepInIntersection = nextStepInIntersection.crossed()
     }
 
-    fun collidesWith(other: Cart): Boolean = other.position == position
+    fun collisionPartner(others: Set<Cart>): Cart? = others.find { this.collidesWith(it) }
 
-    fun collidesWithAny(others: Set<Cart>): Boolean = others.any { this.collidesWith(it) }
+    fun collidesWith(other: Cart): Boolean = other.position == position
 
     public enum class Direction {
         UP,

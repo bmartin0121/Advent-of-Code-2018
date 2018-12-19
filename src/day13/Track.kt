@@ -40,7 +40,7 @@ class Track(val components: Map<Pair<Int, Int>, Component>) {
                         cart.changeDirection(Cart.Direction.RIGHT)
                         HORIZONTAL.nextPosition(cart)
                     }
-                    Cart.Direction.RIGHT-> {
+                    Cart.Direction.RIGHT -> {
                         cart.changeDirection(Cart.Direction.DOWN)
                         VERTICAL.nextPosition(cart)
                     }
@@ -69,7 +69,7 @@ class Track(val components: Map<Pair<Int, Int>, Component>) {
         },
         INTERSECTION {
             override fun nextPosition(cart: Cart): Pair<Int, Int> {
-                val nextPos = when(cart.nextStepInIntersection) {
+                val nextPos = when (cart.nextStepInIntersection) {
                     Cart.IntersectionCorssing.STRAIGHT -> when (cart.facing) {
                         Cart.Direction.UP, Cart.Direction.DOWN -> VERTICAL.nextPosition(cart)
                         Cart.Direction.LEFT, Cart.Direction.RIGHT -> HORIZONTAL.nextPosition(cart)
