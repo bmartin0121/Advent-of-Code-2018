@@ -15,13 +15,22 @@ sealed class CaveUnit(var position: Pair<Int, Int>) : Comparable<CaveUnit> {
 
 abstract class CombatCaveUnit(position: Pair<Int, Int>) : CaveUnit(position) {
     private val attackPower = 3
-    private var health = 200
+    var health = 200
     var roundsPlayed = 0
 
     fun isAlive() = health > 0
 
     fun move(cave: Cave) {
-
+        val target = cave.getPossibleTargetPositionsFor(this)
+                .map { it.position }
+                .sortedWith(ReadingDistance())
+                .minBy { pos: Pair<Int, Int> -> cave.calculateShortestPathLengthBetween(position, pos) }
+        if (target != null) {
+            val nextStep = cave.getNextStepTowards(position, target)
+            if (nextStep != null) {
+                cave.moveTo(this, nextStep)
+            }
+        }
     }
 
     fun attack(enemy: CombatCaveUnit, cave: Cave) {
@@ -36,6 +45,7 @@ abstract class CombatCaveUnit(position: Pair<Int, Int>) : CaveUnit(position) {
     }
 
     abstract fun isEnemyOf(unit: CombatCaveUnit): Boolean
+    override fun toString() = "${this.javaClass.simpleName}[position=$position, health=$health, rounds=$roundsPlayed]"
 }
 
 class Elf(position: Pair<Int, Int>) : CombatCaveUnit(position) {
@@ -47,8 +57,6 @@ class Goblin(position: Pair<Int, Int>) : CombatCaveUnit(position) {
     override val mapSymbol = 'G'
     override fun isEnemyOf(unit: CombatCaveUnit) = unit is Elf
 }
-
-
 
 abstract class PrimitiveCaveUnit(position: Pair<Int, Int>) : CaveUnit(position)
 
