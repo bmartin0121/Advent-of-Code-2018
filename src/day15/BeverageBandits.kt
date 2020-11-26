@@ -1,23 +1,37 @@
 package day15
 
 import common.readLines
+import java.lang.IllegalArgumentException
 
 fun main(args: Array<String>) {
-    val caveMap = mutableMapOf<Pair<Int, Int>, Cave.Block>()
-    val units = mutableListOf<Unit>()
+    val caveMap = mutableMapOf<Pair<Int, Int>, CaveUnit>()
     readLines("day15.txt")
             .forEachIndexed { rowIndex, line ->
-                line.forEachIndexed { colIndex, blcok ->
+                line.forEachIndexed { colIndex, block ->
                     val coordinate = rowIndex to colIndex
-                    when(blcok) {
-                        '#' -> caveMap[coordinate] = Cave.Block.WALL
-                        '.' -> caveMap[coordinate] = Cave.Block.FLOOR
-                        'G' -> units.add(Goblin(coordinate))
-                        'E' -> units.add(Elf(coordinate))
+                    caveMap[coordinate] = when(block) {
+                        '#' -> Wall(coordinate)
+                        '.' -> Floor(coordinate)
+                        'G' -> Goblin(coordinate)
+                        'E' -> Elf(coordinate)
+                        else -> throw IllegalArgumentException("Unknown block: $block")
                     }
                 }
             }
     val cave = Cave(caveMap)
-    units.sorted()
-    print(units)
+    var possibleEnd = false
+    var stillGoing = true
+    while(stillGoing) {
+        val currentPlayer = cave.nextPlayer()
+        if (currentPlayer != null) {
+            currentPlayer.endTurn()
+        } else if (!possibleEnd) {
+            cave.nextRound()
+            possibleEnd = true
+        } else if (possibleEnd) {
+            stillGoing = false
+        }
+        print(cave)
+    }
+
 }
