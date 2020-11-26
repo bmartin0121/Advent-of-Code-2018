@@ -21,7 +21,7 @@ class Cave {
                         .map { units[it] }
                         .filterIsInstance<Floor>()
             }
-            .filter { PathFinder().calculateShortestPathLengthBetween(unit.position, it.position, units) < 99999 }
+            .filter { calculateShortestPathLengthBetween(unit.position, it.position) < Int.MAX_VALUE }
 
     fun calculateShortestPathLengthBetween(start: Pair<Int, Int>, target: Pair<Int, Int>): Int {
         return PathFinder().calculateShortestPathLengthBetween(start, target, units)
@@ -66,12 +66,12 @@ class Cave {
             .firstOrNull { it.roundsPlayed < currentRound }
 
     fun nextRound() {
-        print("After $currentRound rounds:\n $this")
-        units.values.filterIsInstance<CombatCaveUnit>().sorted().forEach { println(it) }
+        // print("After $currentRound rounds:\n $this")
+        // units.values.filterIsInstance<CombatCaveUnit>().sorted().forEach { println(it) }
         ++currentRound;
     }
 
-    fun isGameOver() = units.values.all { it !is Elf } || units.values.all { it !is Goblin } || hasElfDied()
+    fun isGameOver(noCasualtiesAllowed: Boolean) = units.values.all { it !is Elf } || units.values.all { it !is Goblin } || (noCasualtiesAllowed && hasElfDied())
 
     fun hasElfDied() = initialNumberOfElves > units.values.count { it is Elf }
 

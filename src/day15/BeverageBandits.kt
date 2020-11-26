@@ -5,7 +5,7 @@ import java.lang.IllegalArgumentException
 
 fun main(args: Array<String>) {
     val cave = setUpCave(3)
-    day1(cave)
+    day1(cave, false)
     day2()
 }
 
@@ -27,8 +27,8 @@ fun setUpCave(elfPower: Int): Cave {
     return Cave(caveMap)
 }
 
-fun day1(cave: Cave) {
-    while (!cave.isGameOver()) {
+fun day1(cave: Cave, noCasualtiesAllowed: Boolean) {
+    while (!cave.isGameOver(noCasualtiesAllowed)) {
         val currentPlayer = cave.nextPlayer()
         if (currentPlayer != null) {
             val target = cave.identifyTargetFor(currentPlayer)
@@ -54,7 +54,7 @@ fun day2() {
     var withoutCasulties = false
     while(!withoutCasulties) {
         var cave = setUpCave(elfPower)
-        day1(cave)
+        day1(cave, true)
         withoutCasulties = !cave.hasElfDied()
         print("Elf power was: $elfPower")
         elfPower += 3

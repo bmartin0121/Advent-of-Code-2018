@@ -15,9 +15,7 @@ class PathFinder {
             )
             processed.add(current)
         }
-        val length = touched.find { it.position == target }?.level ?: 99999
-        // println("Lenght between $start and $target = $length")
-        return length
+        return touched.find { it.position == target }?.level ?: Int.MAX_VALUE
     }
 
     data class Node(val position: Pair<Int, Int>, val level: Int)
