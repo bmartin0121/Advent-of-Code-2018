@@ -4,6 +4,12 @@ import common.readLines
 import java.lang.IllegalArgumentException
 
 fun main(args: Array<String>) {
+    val cave = setUpCave(3)
+    day1(cave)
+    day2()
+}
+
+fun setUpCave(elfPower: Int): Cave {
     val caveMap = mutableMapOf<Pair<Int, Int>, CaveUnit>()
     readLines("day15.txt")
             .forEachIndexed { rowIndex, line ->
@@ -13,12 +19,15 @@ fun main(args: Array<String>) {
                         '#' -> Wall(coordinate)
                         '.' -> Floor(coordinate)
                         'G' -> Goblin(coordinate)
-                        'E' -> Elf(coordinate)
+                        'E' -> Elf(coordinate, elfPower)
                         else -> throw IllegalArgumentException("Unknown block: $block")
                     }
                 }
             }
-    val cave = Cave(caveMap)
+    return Cave(caveMap)
+}
+
+fun day1(cave: Cave) {
     while (!cave.isGameOver()) {
         val currentPlayer = cave.nextPlayer()
         if (currentPlayer != null) {
@@ -38,7 +47,18 @@ fun main(args: Array<String>) {
         }
     }
     cave.outcome()
+}
 
+fun day2() {
+    var elfPower = 4
+    var withoutCasulties = false
+    while(!withoutCasulties) {
+        var cave = setUpCave(elfPower)
+        day1(cave)
+        withoutCasulties = !cave.hasElfDied()
+        print("Elf power was: $elfPower")
+        elfPower += 3
+    }
 }
 
 fun Pair<Int, Int>.surroundings() = setOf(

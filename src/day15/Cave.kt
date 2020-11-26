@@ -5,12 +5,14 @@ class Cave {
     private val units: MutableMap<Pair<Int, Int>, CaveUnit>
     private val width: Int
     private val height: Int
+    private val initialNumberOfElves: Int
     var currentRound = 1
 
     constructor(units: MutableMap<Pair<Int, Int>, CaveUnit>) {
         this.units = units
         this.width = units.map { it.key.first }.max()!!
         this.height = units.map { it.key.second }.max()!!
+        this.initialNumberOfElves = units.values.count { it is Elf }
     }
 
     fun getPossibleTargetPositionsFor(unit: CombatCaveUnit) = getEnemiesOf(unit)
@@ -69,7 +71,9 @@ class Cave {
         ++currentRound;
     }
 
-    fun isGameOver() = units.values.all { it !is Elf } || units.values.all { it !is Goblin }
+    fun isGameOver() = units.values.all { it !is Elf } || units.values.all { it !is Goblin } || hasElfDied()
+
+    fun hasElfDied() = initialNumberOfElves > units.values.count { it is Elf }
 
     fun outcome() {
         val hp = units.values

@@ -13,8 +13,7 @@ sealed class CaveUnit(var position: Pair<Int, Int>) : Comparable<CaveUnit> {
     override fun toString() = "${this.javaClass.simpleName}[position=$position]"
 }
 
-abstract class CombatCaveUnit(position: Pair<Int, Int>) : CaveUnit(position) {
-    private val attackPower = 3
+abstract class CombatCaveUnit(position: Pair<Int, Int>, private var attackPower: Int) : CaveUnit(position) {
     var health = 200
     var roundsPlayed = 0
 
@@ -48,12 +47,12 @@ abstract class CombatCaveUnit(position: Pair<Int, Int>) : CaveUnit(position) {
     override fun toString() = "${this.javaClass.simpleName}[position=$position, health=$health, rounds=$roundsPlayed]"
 }
 
-class Elf(position: Pair<Int, Int>) : CombatCaveUnit(position) {
+class Elf(position: Pair<Int, Int>, attackPower: Int) : CombatCaveUnit(position, attackPower) {
     override val mapSymbol = 'E'
     override fun isEnemyOf(unit: CombatCaveUnit) = unit is Goblin
 }
 
-class Goblin(position: Pair<Int, Int>) : CombatCaveUnit(position) {
+class Goblin(position: Pair<Int, Int>) : CombatCaveUnit(position, 3) {
     override val mapSymbol = 'G'
     override fun isEnemyOf(unit: CombatCaveUnit) = unit is Elf
 }
