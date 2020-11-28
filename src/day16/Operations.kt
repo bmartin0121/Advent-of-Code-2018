@@ -10,7 +10,7 @@ sealed class Operation {
 class Addr : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
         return register.mutate {
-            it[c] = register[a] + register[c]
+            it[c] = register[a] + register[b]
         }
     }
 }
