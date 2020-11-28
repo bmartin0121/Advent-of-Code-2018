@@ -1,22 +1,23 @@
 package day16
 
-import common.runOnCopyList
+import common.mutate
 
 sealed class Operation {
     abstract fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int>
+    override fun toString() = this.javaClass.simpleName
 }
 
 class Addr : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
-            it[c] = register[a] + register[b]
+        return register.mutate {
+            it[c] = register[a] + register[c]
         }
     }
 }
 
 class Addi : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
+        return register.mutate {
             it[c] = register[a] + b
         }
     }
@@ -24,7 +25,7 @@ class Addi : Operation() {
 
 class Mulr : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
+        return register.mutate {
             it[c] = register[a] * register[b]
         }
     }
@@ -32,7 +33,7 @@ class Mulr : Operation() {
 
 class Muli : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
+        return register.mutate {
             it[c] = register[a] * b
         }
     }
@@ -40,7 +41,7 @@ class Muli : Operation() {
 
 class Banr : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
+        return register.mutate {
             it[c] = register[a] and register[b]
         }
     }
@@ -48,7 +49,7 @@ class Banr : Operation() {
 
 class Bani : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
+        return register.mutate {
             it[c] = register[a] and b
         }
     }
@@ -56,7 +57,7 @@ class Bani : Operation() {
 
 class Borr : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
+        return register.mutate {
             it[c] = register[a] or register[b]
         }
     }
@@ -64,7 +65,7 @@ class Borr : Operation() {
 
 class Bori : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
+        return register.mutate {
             it[c] = register[a] or b
         }
     }
@@ -72,7 +73,7 @@ class Bori : Operation() {
 
 class Setr : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
+        return register.mutate {
             it[c] = register[a]
         }
     }
@@ -80,7 +81,7 @@ class Setr : Operation() {
 
 class Seti : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
+        return register.mutate {
             it[c] = a
         }
     }
@@ -88,7 +89,7 @@ class Seti : Operation() {
 
 class Gtir : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
+        return register.mutate {
             it[c] = if (a > register[b]) {
                 1
             } else {
@@ -100,7 +101,7 @@ class Gtir : Operation() {
 
 class Gtri : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
+        return register.mutate {
             it[c] = if (register[a] > b) {
                 1
             } else {
@@ -112,7 +113,7 @@ class Gtri : Operation() {
 
 class Gtrr : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
+        return register.mutate {
             it[c] = if (register[a] > register[b]) {
                 1
             } else {
@@ -124,7 +125,7 @@ class Gtrr : Operation() {
 
 class Eqir : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
+        return register.mutate {
             it[c] = if (a == register[b]) {
                 1
             } else {
@@ -136,7 +137,7 @@ class Eqir : Operation() {
 
 class Eqri : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
+        return register.mutate {
             it[c] = if (register[a] == b) {
                 1
             } else {
@@ -148,7 +149,7 @@ class Eqri : Operation() {
 
 class Eqrr : Operation() {
     override fun execute(a: Int, b: Int, c: Int, register: List<Int>): List<Int> {
-        return runOnCopyList(register) {
+        return register.mutate {
             it[c] = if (register[a] == register[b]) {
                 1
             } else {

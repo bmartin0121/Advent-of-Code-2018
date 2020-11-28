@@ -1,7 +1,7 @@
 package common
 
-fun runOnCopyList(list: List<Int>, block: (_: MutableList<Int>) -> Unit): List<Int> {
-    val copiedList = list.toMutableList()
+fun <T> List<T>.mutate(block: (_: MutableList<T>) -> Unit): List<T> {
+    val copiedList = this.toMutableList()
     block(copiedList)
     return copiedList
 }
